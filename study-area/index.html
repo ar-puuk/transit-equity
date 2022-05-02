@@ -1,0 +1,564 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css">
+        <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <style>
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        </style>
+        <title></title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="data/PopulationDensitypersqmi_1.js"></script>
+        <script src="data/TRAXRoutes_2.js"></script>
+        <script src="data/TRAXStations_3.js"></script>
+        <script src="data/SaltLakeCounty_4.js"></script>
+        <script>
+        var highlightLayer;
+        function highlightFeature(e) {
+            highlightLayer = e.target;
+
+            if (e.target.feature.geometry.type === 'LineString') {
+              highlightLayer.setStyle({
+                color: '#ffff00',
+              });
+            } else {
+              highlightLayer.setStyle({
+                fillColor: '#ffff00',
+                fillOpacity: 1
+              });
+            }
+            highlightLayer.openPopup();
+        }
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:28, minZoom:10
+        })
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+            if (bounds_group.getLayers().length) {
+                map.fitBounds(bounds_group.getBounds());
+            }
+            map.setMaxBounds(map.getBounds());
+        }
+        map.createPane('pane_CartoLight_0');
+        map.getPane('pane_CartoLight_0').style.zIndex = 400;
+        var layer_CartoLight_0 = L.tileLayer('http://a.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.pn', {
+            pane: 'pane_CartoLight_0',
+            opacity: 1.0,
+            attribution: '',
+            minZoom: 10,
+            maxZoom: 28,
+            minNativeZoom: 0,
+            maxNativeZoom: 22
+        });
+        layer_CartoLight_0;
+        map.addLayer(layer_CartoLight_0);
+        function pop_PopulationDensitypersqmi_1(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">GEOID</th>\
+                        <td>' + (feature.properties['GEOID'] !== null ? autolinker.link(feature.properties['GEOID'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Total_Pop</th>\
+                        <td>' + (feature.properties['Total_Pop'] !== null ? autolinker.link(feature.properties['Total_Pop'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">PopDensity</th>\
+                        <td>' + (feature.properties['PopDensity'] !== null ? autolinker.link(feature.properties['PopDensity'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Area</th>\
+                        <td>' + (feature.properties['Area'] !== null ? autolinker.link(feature.properties['Area'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_PopulationDensitypersqmi_1_0(feature) {
+            if (feature.properties['PopDensity'] >= 0.000000 && feature.properties['PopDensity'] <= 39805.309000 ) {
+                return {
+                pane: 'pane_PopulationDensitypersqmi_1',
+                opacity: 1,
+                color: 'rgba(173,173,173,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,245,240,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['PopDensity'] >= 39805.309000 && feature.properties['PopDensity'] <= 72488.443000 ) {
+                return {
+                pane: 'pane_PopulationDensitypersqmi_1',
+                opacity: 1,
+                color: 'rgba(173,173,173,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(252,190,165,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['PopDensity'] >= 72488.443000 && feature.properties['PopDensity'] <= 109042.718000 ) {
+                return {
+                pane: 'pane_PopulationDensitypersqmi_1',
+                opacity: 1,
+                color: 'rgba(173,173,173,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(251,112,80,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['PopDensity'] >= 109042.718000 && feature.properties['PopDensity'] <= 213756.172000 ) {
+                return {
+                pane: 'pane_PopulationDensitypersqmi_1',
+                opacity: 1,
+                color: 'rgba(173,173,173,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(211,32,32,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['PopDensity'] >= 213756.172000 && feature.properties['PopDensity'] <= 408021.515000 ) {
+                return {
+                pane: 'pane_PopulationDensitypersqmi_1',
+                opacity: 1,
+                color: 'rgba(173,173,173,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(103,0,13,1.0)',
+                interactive: true,
+            }
+            }
+        }
+        map.createPane('pane_PopulationDensitypersqmi_1');
+        map.getPane('pane_PopulationDensitypersqmi_1').style.zIndex = 401;
+        map.getPane('pane_PopulationDensitypersqmi_1').style['mix-blend-mode'] = 'normal';
+        var layer_PopulationDensitypersqmi_1 = new L.geoJson(json_PopulationDensitypersqmi_1, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_PopulationDensitypersqmi_1',
+            layerName: 'layer_PopulationDensitypersqmi_1',
+            pane: 'pane_PopulationDensitypersqmi_1',
+            onEachFeature: pop_PopulationDensitypersqmi_1,
+            style: style_PopulationDensitypersqmi_1_0,
+        });
+        bounds_group.addLayer(layer_PopulationDensitypersqmi_1);
+        map.addLayer(layer_PopulationDensitypersqmi_1);
+        function pop_TRAXRoutes_2(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">OBJECTID</th>\
+                        <td>' + (feature.properties['OBJECTID'] !== null ? autolinker.link(feature.properties['OBJECTID'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ID</th>\
+                        <td>' + (feature.properties['ID'] !== null ? autolinker.link(feature.properties['ID'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">DIRECTION</th>\
+                        <td>' + (feature.properties['DIRECTION'] !== null ? autolinker.link(feature.properties['DIRECTION'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">LINE</th>\
+                        <td>' + (feature.properties['LINE'] !== null ? autolinker.link(feature.properties['LINE'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ROUTE</th>\
+                        <td>' + (feature.properties['ROUTE'] !== null ? autolinker.link(feature.properties['ROUTE'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">SHAPE_Leng</th>\
+                        <td>' + (feature.properties['SHAPE_Leng'] !== null ? autolinker.link(feature.properties['SHAPE_Leng'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_TRAXRoutes_2_0(feature) {
+            switch(String(feature.properties['ROUTE'])) {
+                case 'B':
+                    return {
+                pane: 'pane_TRAXRoutes_2',
+                opacity: 1,
+                color: 'rgba(8,48,107,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 3.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+                    break;
+                case 'BG':
+                    return {
+                pane: 'pane_TRAXRoutes_2',
+                opacity: 1,
+                color: 'rgba(51,160,44,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 3.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+                    break;
+                case 'BGR':
+                    return {
+                pane: 'pane_TRAXRoutes_2',
+                opacity: 1,
+                color: 'rgba(8,48,107,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 3.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+                    break;
+                case 'BR':
+                    return {
+                pane: 'pane_TRAXRoutes_2',
+                opacity: 1,
+                color: 'rgba(8,48,107,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 3.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+                    break;
+                case 'G':
+                    return {
+                pane: 'pane_TRAXRoutes_2',
+                opacity: 1,
+                color: 'rgba(51,160,44,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 3.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+                    break;
+                case 'R':
+                    return {
+                pane: 'pane_TRAXRoutes_2',
+                opacity: 1,
+                color: 'rgba(220,8,18,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 3.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+                    break;
+                case 'S':
+                    return {
+                pane: 'pane_TRAXRoutes_2',
+                opacity: 1,
+                color: 'rgba(173,173,173,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 3.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_TRAXRoutes_2');
+        map.getPane('pane_TRAXRoutes_2').style.zIndex = 402;
+        map.getPane('pane_TRAXRoutes_2').style['mix-blend-mode'] = 'normal';
+        var layer_TRAXRoutes_2 = new L.geoJson(json_TRAXRoutes_2, {
+            attribution: '',
+            interactive: false,
+            dataVar: 'json_TRAXRoutes_2',
+            layerName: 'layer_TRAXRoutes_2',
+            pane: 'pane_TRAXRoutes_2',
+            onEachFeature: pop_TRAXRoutes_2,
+            style: style_TRAXRoutes_2_0,
+        });
+        bounds_group.addLayer(layer_TRAXRoutes_2);
+        map.addLayer(layer_TRAXRoutes_2);
+        function pop_TRAXStations_3(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">OBJECTID</th>\
+                        <td>' + (feature.properties['OBJECTID'] !== null ? autolinker.link(feature.properties['OBJECTID'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ID</th>\
+                        <td>' + (feature.properties['ID'] !== null ? autolinker.link(feature.properties['ID'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ADDRESS</th>\
+                        <td>' + (feature.properties['ADDRESS'] !== null ? autolinker.link(feature.properties['ADDRESS'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">PARKNRIDE</th>\
+                        <td>' + (feature.properties['PARKNRIDE'] !== null ? autolinker.link(feature.properties['PARKNRIDE'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">STATIONNAM</th>\
+                        <td>' + (feature.properties['STATIONNAM'] !== null ? autolinker.link(feature.properties['STATIONNAM'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">LINENAME</th>\
+                        <td>' + (feature.properties['LINENAME'] !== null ? autolinker.link(feature.properties['LINENAME'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">STATUS</th>\
+                        <td>' + (feature.properties['STATUS'] !== null ? autolinker.link(feature.properties['STATUS'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Boarding</th>\
+                        <td>' + (feature.properties['Boarding'] !== null ? autolinker.link(feature.properties['Boarding'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Alighting</th>\
+                        <td>' + (feature.properties['Alighting'] !== null ? autolinker.link(feature.properties['Alighting'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">AvgRider</th>\
+                        <td>' + (feature.properties['AvgRider'] !== null ? autolinker.link(feature.properties['AvgRider'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Serv_freq</th>\
+                        <td>' + (feature.properties['Serv_freq'] !== null ? autolinker.link(feature.properties['Serv_freq'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ServCapaCT</th>\
+                        <td>' + (feature.properties['ServCapaCT'] !== null ? autolinker.link(feature.properties['ServCapaCT'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_TRAXStations_3_0() {
+            return {
+                pane: 'pane_TRAXStations_3',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(31,120,180,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_TRAXStations_3');
+        map.getPane('pane_TRAXStations_3').style.zIndex = 403;
+        map.getPane('pane_TRAXStations_3').style['mix-blend-mode'] = 'normal';
+        var layer_TRAXStations_3 = new L.geoJson(json_TRAXStations_3, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_TRAXStations_3',
+            layerName: 'layer_TRAXStations_3',
+            pane: 'pane_TRAXStations_3',
+            onEachFeature: pop_TRAXStations_3,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_TRAXStations_3_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_TRAXStations_3);
+        map.addLayer(layer_TRAXStations_3);
+        function pop_SaltLakeCounty_4(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['OBJECTID'] !== null ? autolinker.link(feature.properties['OBJECTID'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['COUNTYNBR'] !== null ? autolinker.link(feature.properties['COUNTYNBR'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['ENTITYNBR'] !== null ? autolinker.link(feature.properties['ENTITYNBR'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['ENTITYYR'] !== null ? autolinker.link(feature.properties['ENTITYYR'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['NAME'] !== null ? autolinker.link(feature.properties['NAME'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['FIPS'] !== null ? autolinker.link(feature.properties['FIPS'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['STATEPLANE'] !== null ? autolinker.link(feature.properties['STATEPLANE'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['POP_LASTCE'] !== null ? autolinker.link(feature.properties['POP_LASTCE'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['POP_CURRES'] !== null ? autolinker.link(feature.properties['POP_CURRES'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['GlobalID'] !== null ? autolinker.link(feature.properties['GlobalID'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['FIPS_STR'] !== null ? autolinker.link(feature.properties['FIPS_STR'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['COLOR4'] !== null ? autolinker.link(feature.properties['COLOR4'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['SHAPE_Leng'] !== null ? autolinker.link(feature.properties['SHAPE_Leng'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['SHAPE_Area'] !== null ? autolinker.link(feature.properties['SHAPE_Area'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_SaltLakeCounty_4_0() {
+            return {
+                pane: 'pane_SaltLakeCounty_4',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '10,5',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 4.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(229,182,54,0.0)',
+                interactive: false,
+            }
+        }
+        map.createPane('pane_SaltLakeCounty_4');
+        map.getPane('pane_SaltLakeCounty_4').style.zIndex = 404;
+        map.getPane('pane_SaltLakeCounty_4').style['mix-blend-mode'] = 'normal';
+        var layer_SaltLakeCounty_4 = new L.geoJson(json_SaltLakeCounty_4, {
+            attribution: '',
+            interactive: false,
+            dataVar: 'json_SaltLakeCounty_4',
+            layerName: 'layer_SaltLakeCounty_4',
+            pane: 'pane_SaltLakeCounty_4',
+            onEachFeature: pop_SaltLakeCounty_4,
+            style: style_SaltLakeCounty_4_0,
+        });
+        bounds_group.addLayer(layer_SaltLakeCounty_4);
+        map.addLayer(layer_SaltLakeCounty_4);
+        var baseMaps = {};
+        L.control.layers(baseMaps,{'<img src="legend/SaltLakeCounty_4.png" /> Salt Lake County': layer_SaltLakeCounty_4,'<img src="legend/TRAXStations_3.png" /> TRAX Stations': layer_TRAXStations_3,'TRAX Routes<br /><table><tr><td style="text-align: center;"><img src="legend/TRAXRoutes_2_BlueLine0.png" /></td><td>Blue Line</td></tr><tr><td style="text-align: center;"><img src="legend/TRAXRoutes_2_BlueandGreenLine1.png" /></td><td>Blue and Green Line</td></tr><tr><td style="text-align: center;"><img src="legend/TRAXRoutes_2_BlueGreenandRedLine2.png" /></td><td>Blue, Green and Red Line</td></tr><tr><td style="text-align: center;"><img src="legend/TRAXRoutes_2_BlueandRedLine3.png" /></td><td>Blue and Red Line</td></tr><tr><td style="text-align: center;"><img src="legend/TRAXRoutes_2_GreenLine4.png" /></td><td>Green Line</td></tr><tr><td style="text-align: center;"><img src="legend/TRAXRoutes_2_RedLine5.png" /></td><td>Red Line</td></tr><tr><td style="text-align: center;"><img src="legend/TRAXRoutes_2_SLineStreetcar6.png" /></td><td>S-Line Streetcar</td></tr></table>': layer_TRAXRoutes_2,'Population Density (per sq.mi.)<br /><table><tr><td style="text-align: center;"><img src="legend/PopulationDensitypersqmi_1_0398050.png" /></td><td>0 - 39805</td></tr><tr><td style="text-align: center;"><img src="legend/PopulationDensitypersqmi_1_39805724881.png" /></td><td>39805 - 72488</td></tr><tr><td style="text-align: center;"><img src="legend/PopulationDensitypersqmi_1_724881090432.png" /></td><td>72488 - 109043</td></tr><tr><td style="text-align: center;"><img src="legend/PopulationDensitypersqmi_1_1090432137563.png" /></td><td>109043 - 213756</td></tr><tr><td style="text-align: center;"><img src="legend/PopulationDensitypersqmi_1_2137564080224.png" /></td><td>213756 - 408022</td></tr></table>': layer_PopulationDensitypersqmi_1,"Carto Light": layer_CartoLight_0,},{collapsed:false}).addTo(map);
+        setBounds();
+        </script>
+    </body>
+</html>
